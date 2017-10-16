@@ -7,7 +7,7 @@ import scipy.misc
 
 from display_network import *
 
-mndata = MNIST('MNIST/')
+mndata = MNIST('../MNIST/')
 mndata.load_testing()
 X = mndata.test_images
 X0 = np.asarray(X)[:, :] / 256.0
