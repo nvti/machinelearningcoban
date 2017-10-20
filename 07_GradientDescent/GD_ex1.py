@@ -35,12 +35,14 @@ X = np.arange(-5, 5, 0.001)
 
 ax.plot(X, cost(X), 'b')
 
-cur_point = ax.plot([-5], cost([-5]), 'ko')
-new_point = ax.plot([-5], cost([-5]), 'ro')
+cur_point = ax.plot([-5], cost(-5), 'ko')
+new_point = ax.plot([-5], cost(-5), 'ro')
+
 
 def update(i):
     label = 'timestep {0}'.format(i)
     ax.set_xlabel(label)
 
-anim = FuncAnimation(fig, update, frames=np.arange(0, 10), interval=100)
+
+anim = FuncAnimation(fig, update, frames=np.arange(0, 10), interval=500)
 plt.show()
