@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 from sklearn.neighbors import NearestNeighbors
 import scipy.misc
+from sklearn.metrics import accuracy_score
 
 from display_network import *
 
@@ -11,12 +12,18 @@ mndata = MNIST('../MNIST/')
 mndata.load_testing()
 X = mndata.test_images
 X0 = np.asarray(X)[:, :] / 256.0
+label = np.asarray(mndata.test_labels)[:]
+
 X = X0
 
 K = 10
 kmeans = KMeans(n_clusters=K).fit(X)
 
 pred_label = kmeans.predict(X)
+
+# Calculate accuracy score
+print("Sum: %.2f %%" % (100 * accuracy_score(label, pred_label)))
+
 
 print(type(kmeans.cluster_centers_.T))
 print(kmeans.cluster_centers_.T.shape)
@@ -51,6 +58,7 @@ for k in range(K):
 
     X1[N0 * k: N0 * k + N0, :] = Xk[nearest_id, :]
     X2[N0 * k: N0 * k + N0, :] = Xk[:N0, :]
+
 
 plt.axis('off')
 A = display_network(X2.T, K, N0)
