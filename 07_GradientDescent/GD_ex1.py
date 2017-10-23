@@ -15,15 +15,18 @@ def cost(x):
 
 def myGD1(eta, x0):
     x = [x0]
+    gradiend = [grad(x0)]
+
     for it in range(100):
         x_new = x[-1] - eta * grad(x[-1])
         if abs(grad(x_new)) < 1e-3:
             break
         x.append(x_new)
-    return (x, it)
+        gradiend.append(grad(x_new))
+    return (x, gradiend, it)
 
 
-(x1, it1) = myGD1(.1, -5)
+(x1, grad1, it1) = myGD1(.1, -5)
 
 print('Solution x1 = %f, cost = %f, obtained after %d iterations' %
       (x1[-1], cost(x1[-1]), it1))
@@ -34,7 +37,7 @@ fig.set_tight_layout(True)
 X = np.arange(-5, 5, 0.001)
 
 ax.plot(X, cost(X), 'b')
-ax.set_xlabel('timestep')
+ax.set_xlabel('')
 
 line, = ax.plot([-5, -5], [cost(-5), cost(-5)], 'k')
 pre_point, = ax.plot(-5, cost(-5), 'ko')
@@ -42,7 +45,7 @@ new_point, = ax.plot(-5, cost(-5), 'ro')
 
 
 def update(i):
-    label = 'timestep {0}'.format(i)
+    label = 'iter ' + str(i) + '/' + str(it1) + ', grad = ' + str(grad1[i])
     ax.set_xlabel(label)
 
     if i == 0:
