@@ -120,4 +120,3 @@ def save_gif2(eta, gamma):
 eta = 1
 gamma = .9
 save_gif2(eta, gamma)
-plt.show()
