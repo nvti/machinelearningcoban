@@ -59,11 +59,15 @@ def GD_minibatch_NAG(w_init, grad, eta, gamma):
 
     w_last_check = w_init
     N = X.shape[0]
+
+    iter_check_w = 1
+    count = 0
     for it in range(10):
         # shuffle data
         rd_id = np.random.permutation(N)
         i = 0
         while i < N:
+            count += 1
             g = batch_grad(w[-1] - gamma * v[-1], i, rd_id)
 
             v_new = gamma * v[-1] + eta * g
@@ -72,22 +76,26 @@ def GD_minibatch_NAG(w_init, grad, eta, gamma):
             w.append(w_new)
             v.append(v_new)
 
-            w_this_check = w_new
-            if np.linalg.norm(w_this_check - w_last_check) / \
-                    len(w_init) < 1e-3:
-                return (w, len(w))
-            w_last_check = w_this_check
+            if count % iter_check_w == 0:
+                w_this_check = w_new
+                if np.linalg.norm(w_this_check - w_last_check) / \
+                        len(w_init) < 1e-3:
+                    return (w, len(w))
+                w_last_check = w_this_check
             i += n_point
 
     return (w, len(w))
 
 
 w_init = np.array([[2], [1]])
-(w1, it1) = GD_minibatch_NAG(w_init, sgrad, .5, .5)
+(w1, it1) = GD_minibatch_NAG(w_init, sgrad, .3, .9)
 print('Solution found by GD mini-batch: w = ',
       w1[-1].T, ',\nafter %d iterations.' % (it1 + 1))
 
-scale = 1
+if it1 > 200:
+    scale = it1 // 50
+else:
+    scale = 1
 
 fig, ax = plt.subplots()
 fig.set_tight_layout(True)
