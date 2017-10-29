@@ -2,7 +2,6 @@
 # list of points
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation
 np.random.seed(2)
 
 means = [[2, 2], [4, 2]]
@@ -79,33 +78,17 @@ def draw_line(w):
 
 it = len(w)
 fig, ax = plt.subplots(figsize=(5, 5))
+plt.cla()
+# points
+plt.plot(X0[0, :], X0[1, :], 'b^', markersize = 8, alpha = .8)
+plt.plot(X1[0, :], X1[1, :], 'ro', markersize = 8, alpha = .8)
+plt.axis([0, 6, -2, 4])
+draw_line(p[-1][0])
+cur_axes = plt.gca()
+cur_axes.axes.get_xaxis().set_ticks([])
+cur_axes.axes.get_yaxis().set_ticks([])
+plt.title('PLA pocket. Miss points: ' + str(p[-1][1]))
+ax.set_xlabel('w = ' + str(p[-1][0]))
 
-
-def update(i):
-    ani = plt.cla()
-    # points
-    ani = plt.plot(X0[0, :], X0[1, :], 'b^', markersize = 8, alpha = .8)
-    ani = plt.plot(X1[0, :], X1[1, :], 'ro', markersize = 8, alpha = .8)
-    ani = plt.axis([0, 6, -2, 4])
-    i2 = i if i < it else it - 1
-    ani = draw_line(w[i2])
-    if i < it - 1:
-        # draw one  misclassified point
-        circle = plt.Circle((X[1, m[i]], X[2, m[i]]),
-                            0.15, color='k', fill = False)
-        ax.add_artist(circle)
-    # hide axis
-    cur_axes = plt.gca()
-    cur_axes.axes.get_xaxis().set_ticks([])
-    cur_axes.axes.get_yaxis().set_ticks([])
-
-    label = 'PLA: iter %d/%d' % (i2, it - 1)
-    ax.set_xlabel(label)
-    return ani, ax
-
-
-anim = FuncAnimation(
-    fig, update, frames=np.arange(0, it + 2), interval=500)
-# save
-anim.save('PLA_pocket.gif', dpi = 100, writer = 'imagemagick')
+plt.savefig('PLA_PocketAlgorithm.png')
 plt.show()
