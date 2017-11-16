@@ -30,11 +30,11 @@ def extract_data(X, y, classes):
             (0 and 1, corresponding to two lists in cls)
     """
     y_res_id = np.array([])
-    for i in cls[0]:
+    for i in classes[0]:
         y_res_id = np.hstack((y_res_id, np.where(y == i)[0]))
     n0 = len(y_res_id)
 
-    for i in cls[1]:
+    for i in classes[1]:
         y_res_id = np.hstack((y_res_id, np.where(y == i)[0]))
     n1 = len(y_res_id) - n0
 
@@ -59,11 +59,16 @@ y_pred = logreg.predict(X_test)
 print "Accuracy: %.2f %%" % (100 * accuracy_score(y_test, y_pred.tolist()))
 
 # display misclassified image(s)
-mis = np.where((y_pred - y_test) != 0)[0]
-Xmis = X_test[mis, :]
+# mis = np.where((y_pred - y_test) != 0)[0]
+# Xmis = X_test[mis, :]
 
-plt.axis('off')
-A = display_network(Xmis.T)
-f2 = plt.imshow(A, interpolation='nearest')
-plt.gray()
-plt.show()
+# plt.axis('off')
+# A = display_network(Xmis.T)
+# f2 = plt.imshow(A, interpolation='nearest')
+# plt.gray()
+# plt.show()
+
+logreg = linear_model.LogisticRegression(C=1e5)  # just a big number
+logreg.fit(Xtrain_all, ytrain_all)
+y_pred = logreg.predict(Xtest_all)
+print "Accuracy: %.2f %%" % (100 * accuracy_score(ytest_all, y_pred.tolist()))
